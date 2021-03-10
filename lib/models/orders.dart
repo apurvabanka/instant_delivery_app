@@ -7,7 +7,7 @@ class OrderDetails {
   double dropLong;
 //  DateTime orderDate;
 //  double orderValue;
-//  double customerNumber;
+  String customerNumber;
 
   OrderDetails({
     this.orderId,
@@ -18,7 +18,7 @@ class OrderDetails {
     this.dropLong,
 //    this.orderDate,
 //    this.orderValue,
-//    this.customerNumber
+    this.customerNumber
   });
 
   OrderDetails.fromJson(Map<String,dynamic> json){
@@ -30,7 +30,7 @@ class OrderDetails {
     dropLong = json['drop_long'];
 //    orderDate = json['order_date'];
 //    orderValue = json['order_value'];
-//    customerNumber = json['customer_number'];
+    customerNumber = json['customer_number'];
 
 
   }

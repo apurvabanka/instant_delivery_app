@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:instantdel/api_service.dart';
 import 'package:instantdel/models/orders.dart';
 import 'package:instantdel/maps/map_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListMyOrders extends StatefulWidget {
   @override
@@ -10,10 +12,31 @@ class ListMyOrders extends StatefulWidget {
 
 class _ListMyOrdersState extends State<ListMyOrders> {
 
+  String rid;
+
+  Future<Null> _getRiderId() async{
+    final prefs = await SharedPreferences.getInstance();
+    final riderId = prefs.getInt('rider_id');
+    print(riderId.toString());
+    if(riderId == null){
+      return null;
+    }
+    setState(() {
+      rid = riderId.toString();
+    });
+  }
+
+  _makingPhoneCall(String contactNumber) async {
+    String url = 'tel:'+contactNumber;
+      await launch(url);
+  }
+
   APIService apiService;
   @override
   void initState(){
     apiService = new APIService();
+    rid="";
+    _getRiderId();
     super.initState();
   }
 
@@ -31,7 +54,7 @@ class _ListMyOrdersState extends State<ListMyOrders> {
 
   Widget _orderList(){
     return new FutureBuilder(
-        future: apiService.listOfOrders("24216"),
+        future: apiService.listOfOrders(rid),
       builder: (
         BuildContext context,
           AsyncSnapshot<List<OrderDetails>> model,
@@ -47,7 +70,7 @@ class _ListMyOrdersState extends State<ListMyOrders> {
 
 Widget _buildOrderList(List<OrderDetails> orders){
   return Container(
-    height: 350,
+    height: 450,
     alignment: Alignment.centerLeft,
     child: ListView.builder(
         shrinkWrap: true,
@@ -82,11 +105,19 @@ Widget _buildOrderList(List<OrderDetails> orders){
                       child: Text('Navigate'),
                     ),
                     RaisedButton(onPressed: (){
-                      apiService.orderDelivered(data.orderId.toString());
+                      _makingPhoneCall(data.customerNumber);
                     },
                       padding: const EdgeInsets.all(10),
                       textColor: Colors.white,
                       color: Colors.green,
+                      child: Text('Call User'),
+                    ),
+                    RaisedButton(onPressed: (){
+                      apiService.orderDelivered(data.orderId.toString());
+                    },
+                      padding: const EdgeInsets.all(10),
+                      textColor: Colors.white,
+                      color: Colors.red,
                       child: Text('Mark As Delivered'),
                     ),
                   ],

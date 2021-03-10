@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instantdel/pages/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginDetails extends StatefulWidget {
   @override
@@ -7,6 +8,15 @@ class LoginDetails extends StatefulWidget {
 }
 
 class _LoginDetailsState extends State<LoginDetails> {
+
+  final myController = TextEditingController();
+
+  Future<void> setRiderId(int riderId) async{
+    final prefs = await SharedPreferences.getInstance();
+    print(riderId);
+    await prefs.setInt("rider_id", riderId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +31,12 @@ class _LoginDetailsState extends State<LoginDetails> {
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                keyboardType: TextInputType.number,
+                controller: myController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
+                    labelText: 'Rider ID',
+                    hintText: 'Enter your rider ID'),
               ),
             ),
             Padding(
@@ -32,7 +44,6 @@ class _LoginDetailsState extends State<LoginDetails> {
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -50,12 +61,14 @@ class _LoginDetailsState extends State<LoginDetails> {
               ),
             ),
             Container(
-              height: 50,
+              height: 60,
               width: 250,
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: FlatButton(
                 onPressed: () {
+                  setRiderId(int.parse(myController.text));
+
                   Navigator.push(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
