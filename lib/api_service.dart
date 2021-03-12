@@ -31,6 +31,34 @@ class APIService{
     }
     return data;
   }
+  Future<List<OrderDetails>> listOfOrdersDelivered(String riderid) async{
+    List<OrderDetails> data = new List<OrderDetails>();
+    try{
+      String url = Config.url + Config.myordersdelivered;
+      var response = await Dio().post(
+          url,
+          data: {
+            "rider_id" : riderid
+          },
+          options: new Options(
+              headers: {
+                HttpHeaders
+                    .contentTypeHeader: "application/json",
+              }
+          )
+      );
+      if (response.statusCode == 200) {
+        //print(response.data);
+        data = (response.data['data'] as List)
+            .map((i) => OrderDetails.fromJson(i),).toList();
+        print(data);
+      }
+    }on DioError catch (e) {
+      print(e.response);
+    }
+    return data;
+  }
+
 
   Future<bool> orderPickUp(String orderid,String riderid) async{
     bool ret = false;

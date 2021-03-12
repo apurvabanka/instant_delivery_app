@@ -48,7 +48,7 @@ class _ListCompletedOrdersState extends State<ListCompletedOrders> {
 
   Widget _orderList(){
     return new FutureBuilder(
-        future: apiService.listOfOrders(rid),
+        future: apiService.listOfOrdersDelivered(rid),
         builder: (
             BuildContext context,
             AsyncSnapshot<List<OrderDetails>> model,
