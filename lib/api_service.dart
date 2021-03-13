@@ -78,6 +78,7 @@ class APIService{
           )
       );
       if(response.statusCode == 200){
+        print(response);
           ret = true;
       }
     }
@@ -97,6 +98,35 @@ class APIService{
           data: {
             "order_id":orderid,
           },
+          options: new Options(
+              headers: {
+                HttpHeaders
+                    .contentTypeHeader: "application/json",
+              }
+          )
+      );
+      if(response.statusCode == 200){
+        ret = true;
+      }
+    }
+    on DioError catch (e) {
+      print(e.response);
+      ret = false;
+    }
+
+    return ret;
+  }
+
+  Future <bool> riderLogin(int riderId,String riderPassword) async{
+    bool ret = false;
+    try{
+      String url = Config.url + Config.loginRider;
+      var response = await Dio().post(
+        url,
+        data:{
+          "rider_id": riderId,
+          "rider_password": riderPassword
+        },
           options: new Options(
               headers: {
                 HttpHeaders

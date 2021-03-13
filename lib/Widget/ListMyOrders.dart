@@ -4,6 +4,7 @@ import 'package:instantdel/models/orders.dart';
 import 'package:instantdel/maps/map_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:slider_button/slider_button.dart';
 
 class ListMyOrders extends StatefulWidget {
   @override
@@ -68,13 +69,22 @@ class _ListMyOrdersState extends State<ListMyOrders> {
     );
 }
 
+  Future<Null> _refreshLocalGallery() async{
+    setState(() {
+      _orderList();
+    });
+
+  }
+
 Widget _buildOrderList(List<OrderDetails> orders){
   return Container(
-    height: 450,
+    height: 650,
     alignment: Alignment.centerLeft,
+    child: new RefreshIndicator(
+      onRefresh: _refreshLocalGallery,
     child: ListView.builder(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         scrollDirection: Axis.vertical,
         itemCount: orders.length,
         itemBuilder: (context,index){
@@ -91,41 +101,71 @@ Widget _buildOrderList(List<OrderDetails> orders){
                     Text(
                         "Order ID - "+data.orderId.toString(),
                         style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 20.0,
                           color: Colors.grey[600],
                         ),
                     ),
                     SizedBox(height: 10.0,),
-                    RaisedButton(onPressed: (){
-                      MapUtils.openMap(data.dropLat,data.dropLong);
-                    },
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row (
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children:[
+                      RaisedButton(onPressed: (){
+                        MapUtils.openMap(data.dropLat,data.dropLong);
+                      },
+                          padding: const EdgeInsets.all(10),
+                          textColor: Colors.white,
+                          color: Colors.blue,
+                        child: Text('Navigate'),
+                      ),
+                      RaisedButton(onPressed: (){
+                        _makingPhoneCall(data.customerNumber);
+                      },
                         padding: const EdgeInsets.all(10),
                         textColor: Colors.white,
-                        color: Colors.blue,
-                      child: Text('Navigate'),
+                        color: Colors.green,
+                        child: Text('Call User'),
+                      ),
+                  ]
+                      ),
                     ),
-                    RaisedButton(onPressed: (){
-                      _makingPhoneCall(data.customerNumber);
-                    },
-                      padding: const EdgeInsets.all(10),
-                      textColor: Colors.white,
-                      color: Colors.green,
-                      child: Text('Call User'),
-                    ),
-                    RaisedButton(onPressed: (){
-                      apiService.orderDelivered(data.orderId.toString());
-                    },
-                      padding: const EdgeInsets.all(10),
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      child: Text('Mark As Delivered'),
-                    ),
+//                    RaisedButton(
+//                      onPressed: (){
+//                      apiService.orderDelivered(data.orderId.toString());
+//                    },
+//                      padding: const EdgeInsets.all(10),
+//                      textColor: Colors.white,
+//                      color: Colors.red,
+//                      child: Text('Mark As Delivered'),
+//                    ),
+                      Center(child: SliderButton(
+                          action: () {
+                            apiService.orderDelivered(data.orderId.toString());
+                          },
+                          width: 250,
+                          label: Text(
+                          "Mark Delivered",
+                          style: TextStyle(
+                          color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
+                          ),
+                          icon: Text(
+                          "X",
+                          style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 30,
+                          ),
+                          ),
+                          )
+                      )
                   ],
                 ),
               ),
             ),
           );
         }
+    ),
     ),
   );
   }

@@ -62,13 +62,22 @@ class _ListCompletedOrdersState extends State<ListCompletedOrders> {
     );
   }
 
+  Future<Null> _refreshLocalGallery() async{
+    setState(() {
+      _orderList();
+    });
+
+  }
+
   Widget _buildOrderList(List<OrderDetails> orders){
     return Container(
       height: 350,
       alignment: Alignment.centerLeft,
+        child: new RefreshIndicator(
+        onRefresh: _refreshLocalGallery,
       child: ListView.builder(
           shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
+          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           scrollDirection: Axis.vertical,
           itemCount: orders.length,
           itemBuilder: (context,index){
@@ -97,7 +106,8 @@ class _ListCompletedOrdersState extends State<ListCompletedOrders> {
               ),
             );
           }
-      ),
+          ),
+        ),
     );
   }
 }

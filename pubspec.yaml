@@ -31,6 +31,7 @@ dependencies:
   qrscan: ^0.2.22
   shared_preferences: ^0.5.12+4
   permission_handler: ^5.0.1+1
+  slider_button: ^0.6.0
 
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instantdel/pages/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:instantdel/api_service.dart';
 
 class LoginDetails extends StatefulWidget {
   @override
@@ -9,7 +10,16 @@ class LoginDetails extends StatefulWidget {
 
 class _LoginDetailsState extends State<LoginDetails> {
 
+  APIService apiService;
+
+  @override
+  void initState() {
+    apiService = new APIService();
+    super.initState();
+  }
+
   final myController = TextEditingController();
+  final myController2 = TextEditingController();
 
   Future<void> setRiderId(int riderId) async{
     final prefs = await SharedPreferences.getInstance();
@@ -45,6 +55,7 @@ class _LoginDetailsState extends State<LoginDetails> {
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 obscureText: true,
+                controller: myController2,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
@@ -67,10 +78,20 @@ class _LoginDetailsState extends State<LoginDetails> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: FlatButton(
                 onPressed: () {
-                  setRiderId(int.parse(myController.text));
-
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  apiService.riderLogin(int.parse(myController.text), myController2.text).then(
+                          (value) => setState(() {
+                            print(value);
+                            if(value == true) {
+                              print(value);
+                              setRiderId(int.parse(myController.text));
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (_) => HomePage()));
+                            }
+                            else{
+                              print("Incorrect");
+                            }
+                          })
+                  );
                 },
                 child: Text(
                   'Login',

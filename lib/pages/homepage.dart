@@ -16,12 +16,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int _index;
+  String rid;
 
   Future<Null> _checkIsLogin() async{
     final prefs = await SharedPreferences.getInstance();
-    bool riderId = prefs.containsKey('rider_id');
+    bool riderIdStatus = prefs.containsKey('rider_id');
+    final riderId = prefs.getInt('rider_id');
     print(riderId.toString());
-    if(riderId){
+    setState(() {
+      rid = riderId.toString();
+    });
+    if(riderIdStatus){
       setState(() {
         _index = 0;
       });
@@ -39,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     apiService = new APIService();
     _index = 2;
+    rid="";
     _checkIsLogin();
     super.initState();
   }
@@ -116,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                       actions: <Widget>[
                         new FlatButton(
                           onPressed: () {
-                            apiService.orderPickUp(cameraScanResult, "24216");
+                            apiService.orderPickUp(cameraScanResult,rid);
                             Navigator.of(context).pop();
                           },
                           textColor: Theme

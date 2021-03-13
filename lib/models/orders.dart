@@ -31,7 +31,5 @@ class OrderDetails {
 //    orderDate = json['order_date'];
 //    orderValue = json['order_value'];
     customerNumber = json['customer_number'];
-
-
   }
 }

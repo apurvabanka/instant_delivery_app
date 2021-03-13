@@ -5,5 +5,6 @@ class Config {
   static String myordersdelivered = "listofordersdelivered";
   static String orderpickup = "orderpickup";
   static String orderDelivered = "delivered";
+  static String loginRider = "loginrider";
 
 }
