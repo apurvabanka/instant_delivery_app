@@ -14,6 +14,8 @@ class ListMyOrders extends StatefulWidget {
 class _ListMyOrdersState extends State<ListMyOrders> {
 
   String rid;
+  int _checked;
+  int _result;
 
   Future<Null> _getRiderId() async{
     final prefs = await SharedPreferences.getInstance();
@@ -30,6 +32,25 @@ class _ListMyOrdersState extends State<ListMyOrders> {
   _makingPhoneCall(String contactNumber) async {
     String url = 'tel:'+contactNumber;
       await launch(url);
+  }
+
+  void _handleRadioValueChange(int value) {
+    setState(() {
+      _checked = value;
+
+      switch (_checked) {
+        case 0:
+          _result = 2;
+          break;
+        case 1:
+          _result = 3;
+          break;
+        case 2:
+          _result = 4;
+          break;
+      }
+      print(_result);
+      });
   }
 
   APIService apiService;
@@ -99,7 +120,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
-                        "Order ID - "+data.orderId.toString(),
+                        "Order ID - "+data.orderId.toString()+" Order Type - "+data.typeOfOrder.toString(),
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.grey[600],
@@ -127,6 +148,77 @@ Widget _buildOrderList(List<OrderDetails> orders){
                         color: Colors.green,
                         child: Text('Call User'),
                       ),
+                        RaisedButton(onPressed: (){
+                          showDialog<void>(
+                            context: context,
+                            builder: (BuildContext context)  {
+                              return AlertDialog(
+                                title: const Text('Reasons for Undelivered'),
+                                content: StatefulBuilder(
+                                  builder: (BuildContext context, StateSetter setState) {
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: <Widget>[
+                                        ListTile(
+                                          title: const Text(
+                                              "Refused order"),
+                                          leading: new Radio(
+                                            value: 0,
+                                            groupValue: _checked,
+                                            onChanged: (newValue) =>
+                                                setState(() =>
+                                                _checked = newValue),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: const Text(
+                                              "Didn't respond"),
+                                          leading: new Radio(
+                                            value: 1,
+                                            groupValue: _checked,
+                                            onChanged: (newValue) =>
+                                                setState(() =>
+                                                _checked = newValue),
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: const Text("Other Reason"),
+                                          leading: new Radio(
+                                            value: 2,
+                                            groupValue: _checked,
+                                            onChanged: (newValue) =>
+                                                setState(() =>
+                                                _checked = newValue),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }, //builder
+                                  ),
+
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    textColor: Theme
+                                        .of(context)
+                                        .primaryColor,
+                                    child: const Text('Submit'),
+                                  ),
+                                ],
+                              );
+                            },
+//                            barrierDismissible: false,
+                          );
+                        },
+                          padding: const EdgeInsets.all(10),
+                          textColor: Colors.white,
+                          color: Colors.red,
+                          child: Text('Undelivered'),
+                        ),
                   ]
                       ),
                     ),
@@ -145,7 +237,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                           },
                           width: 250,
                           label: Text(
-                          "Mark Delivered",
+                          "Slide To Complete",
                           style: TextStyle(
                           color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
                           ),

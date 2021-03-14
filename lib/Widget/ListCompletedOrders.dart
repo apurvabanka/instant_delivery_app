@@ -71,7 +71,7 @@ class _ListCompletedOrdersState extends State<ListCompletedOrders> {
 
   Widget _buildOrderList(List<OrderDetails> orders){
     return Container(
-      height: 350,
+      height: 650,
       alignment: Alignment.centerLeft,
         child: new RefreshIndicator(
         onRefresh: _refreshLocalGallery,
