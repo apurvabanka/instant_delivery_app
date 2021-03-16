@@ -113,6 +113,13 @@ Widget _buildOrderList(List<OrderDetails> orders){
           return Padding(
             padding: const EdgeInsets.all(6.0),
             child: Card(
+              elevation: 20,
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: data.typeOfOrder == "PRE" ? Colors.green : Colors.red ,
+                  width: 5.0,
+                ),
+              ),
               margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -156,14 +163,16 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                 title: const Text('Reasons for Undelivered'),
                                 content: StatefulBuilder(
                                   builder: (BuildContext context, StateSetter setState) {
+                                    String text1 = data.typeOfOrder == "PRE" ? "Refused Order" : "Refused Pickup";
                                     return Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment: CrossAxisAlignment
                                           .start,
                                       children: <Widget>[
                                         ListTile(
-                                          title: const Text(
-                                              "Refused order"),
+                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                                          title: Text(
+                                              text1 ),
                                           leading: new Radio(
                                             value: 0,
                                             groupValue: _checked,
@@ -173,6 +182,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                           ),
                                         ),
                                         ListTile(
+                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                                           title: const Text(
                                               "Didn't respond"),
                                           leading: new Radio(
@@ -184,6 +194,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                           ),
                                         ),
                                         ListTile(
+                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                                           title: const Text("Other Reason"),
                                           leading: new Radio(
                                             value: 2,
