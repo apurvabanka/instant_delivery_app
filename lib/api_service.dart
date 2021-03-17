@@ -146,4 +146,35 @@ class APIService{
     return ret;
   }
 
+  Future<bool> markAsUndelivered(String riderId,String orderId, int orderReason) async{
+    bool ret = false;
+    try{
+      String url = Config.url + Config.markUndelivered;
+      var response = await Dio().post(
+          url,
+          data:{
+            "order_id": orderId,
+            "alloted_rider_id": riderId,
+            "order_reason": orderReason
+          },
+          options: new Options(
+              headers: {
+                HttpHeaders
+                    .contentTypeHeader: "application/json",
+              }
+          )
+      );
+      if(response.statusCode == 200){
+        print(response);
+        ret = true;
+      }
+    }
+    on DioError catch (e) {
+      print(e.response);
+      ret = false;
+    }
+
+    return ret;
+
+  }
 }

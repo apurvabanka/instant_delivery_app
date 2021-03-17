@@ -182,6 +182,19 @@ class _HomePageState extends State<HomePage> {
           "Instant Delivery",
           style: TextStyle(color:Colors.white),
         ),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.refresh),
+            color:Colors.white,
+            onPressed: (){
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => super.widget));
+            },
+          ),
+          SizedBox(width:10,),
+        ],
     );
   }
 }

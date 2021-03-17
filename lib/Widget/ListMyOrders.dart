@@ -15,7 +15,6 @@ class _ListMyOrdersState extends State<ListMyOrders> {
 
   String rid;
   int _checked;
-  int _result;
 
   Future<Null> _getRiderId() async{
     final prefs = await SharedPreferences.getInstance();
@@ -34,24 +33,24 @@ class _ListMyOrdersState extends State<ListMyOrders> {
       await launch(url);
   }
 
-  void _handleRadioValueChange(int value) {
-    setState(() {
-      _checked = value;
-
-      switch (_checked) {
-        case 0:
-          _result = 2;
-          break;
-        case 1:
-          _result = 3;
-          break;
-        case 2:
-          _result = 4;
-          break;
-      }
-      print(_result);
-      });
-  }
+//  void _handleRadioValueChange(int value) {
+//    setState(() {
+//      _checked = value;
+//
+//      switch (_checked) {
+//        case 0:
+//          _result = 2;
+//          break;
+//        case 1:
+//          _result = 3;
+//          break;
+//        case 2:
+//          _result = 4;
+//          break;
+//      }
+//      print(_result);
+//      });
+//  }
 
   APIService apiService;
   @override
@@ -156,6 +155,9 @@ Widget _buildOrderList(List<OrderDetails> orders){
                         child: Text('Call User'),
                       ),
                         RaisedButton(onPressed: (){
+                          setState(() {
+                            _checked = 5;
+                          });
                           showDialog<void>(
                             context: context,
                             builder: (BuildContext context)  {
@@ -212,6 +214,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                 actions: <Widget>[
                                   new FlatButton(
                                     onPressed: () {
+                                      apiService.markAsUndelivered(rid, data.orderId.toString(), _checked);
                                       Navigator.of(context).pop();
                                     },
                                     textColor: Theme

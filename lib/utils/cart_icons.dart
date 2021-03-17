@@ -8,4 +8,5 @@ class CartIcons{
   static const IconData cart = const IconData(0xe80a,fontFamily:_kFontFam);
   static const IconData favourites = const IconData(0xe80b,fontFamily:_kFontFam);
   static const IconData account = const IconData(0xe808,fontFamily:_kFontFam);
+  static const IconData refresh = IconData(0xe96d, fontFamily: _kFontFam);
 }
