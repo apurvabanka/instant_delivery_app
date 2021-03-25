@@ -247,6 +247,18 @@ Widget _buildOrderList(List<OrderDetails> orders){
 //                    ),
                       Center(child: SliderButton(
                           action: () {
+                            if(data.typeOfPayment == "COD"){
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context)  {
+                                      return AlertDialog(
+                                        title: const Text('Collect Cash'),
+                                        content: Text(
+                                            'Rs '+data.orderValue.toString()),
+                                      );
+                                    },
+                                );
+                            }
                             apiService.orderDelivered(data.orderId.toString());
                           },
                           width: 250,
