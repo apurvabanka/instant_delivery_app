@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:instantdel/api_service.dart';
 import 'package:instantdel/models/orders.dart';
@@ -5,6 +6,7 @@ import 'package:instantdel/maps/map_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:slider_button/slider_button.dart';
+import 'package:instantdel/pages/homepage.dart';
 
 class ListMyOrders extends StatefulWidget {
   @override
@@ -33,24 +35,6 @@ class _ListMyOrdersState extends State<ListMyOrders> {
       await launch(url);
   }
 
-//  void _handleRadioValueChange(int value) {
-//    setState(() {
-//      _checked = value;
-//
-//      switch (_checked) {
-//        case 0:
-//          _result = 2;
-//          break;
-//        case 1:
-//          _result = 3;
-//          break;
-//        case 2:
-//          _result = 4;
-//          break;
-//      }
-//      print(_result);
-//      });
-//  }
 
   APIService apiService;
   @override
@@ -83,6 +67,14 @@ class _ListMyOrdersState extends State<ListMyOrders> {
           if(model.hasData){
             return _buildOrderList(model.data);
           }
+            Fluttertoast.showToast(
+              msg: "Hello world",
+              textColor: Colors.black,
+              toastLength: Toast.LENGTH_SHORT,
+              timeInSecForIos: 1,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.indigo,
+            );
           return Center(child: CircularProgressIndicator(),
           );
         }
@@ -155,78 +147,89 @@ Widget _buildOrderList(List<OrderDetails> orders){
                         child: Text('Call User'),
                       ),
                         RaisedButton(onPressed: (){
-                          setState(() {
-                            _checked = 5;
-                          });
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context)  {
-                              return AlertDialog(
-                                title: const Text('Reasons for Undelivered'),
-                                content: StatefulBuilder(
-                                  builder: (BuildContext context, StateSetter setState) {
-                                    String text1 = data.typeOfOrder == "PRE" ? "Refused Order" : "Refused Pickup";
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: <Widget>[
-                                        ListTile(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                          title: Text(
-                                              text1 ),
-                                          leading: new Radio(
-                                            value: 0,
-                                            groupValue: _checked,
-                                            onChanged: (newValue) =>
-                                                setState(() =>
-                                                _checked = newValue),
+                            setState(() {
+                              _checked = 5;
+                            });
+                            showDialog<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Reasons for Undelivered'),
+                                  content: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      String text1 = data.typeOfOrder == "PRE"
+                                          ? "Refused Order"
+                                          : "Refused Pickup";
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: <Widget>[
+                                          ListTile(
+                                            contentPadding: EdgeInsets
+                                                .symmetric(
+                                                vertical: 0.0, horizontal: 0.0),
+                                            title: Text(
+                                                text1),
+                                            leading: new Radio(
+                                              value: 0,
+                                              groupValue: _checked,
+                                              onChanged: (newValue) =>
+                                                  setState(() =>
+                                                  _checked = newValue),
+                                            ),
                                           ),
-                                        ),
-                                        ListTile(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                          title: const Text(
-                                              "Didn't respond"),
-                                          leading: new Radio(
-                                            value: 1,
-                                            groupValue: _checked,
-                                            onChanged: (newValue) =>
-                                                setState(() =>
-                                                _checked = newValue),
+                                          ListTile(
+                                            contentPadding: EdgeInsets
+                                                .symmetric(
+                                                vertical: 0.0, horizontal: 0.0),
+                                            title: const Text(
+                                                "Didn't respond"),
+                                            leading: new Radio(
+                                              value: 1,
+                                              groupValue: _checked,
+                                              onChanged: (newValue) =>
+                                                  setState(() =>
+                                                  _checked = newValue),
+                                            ),
                                           ),
-                                        ),
-                                        ListTile(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                          title: const Text("Other Reason"),
-                                          leading: new Radio(
-                                            value: 2,
-                                            groupValue: _checked,
-                                            onChanged: (newValue) =>
-                                                setState(() =>
-                                                _checked = newValue),
+                                          ListTile(
+                                            contentPadding: EdgeInsets
+                                                .symmetric(
+                                                vertical: 0.0, horizontal: 0.0),
+                                            title: const Text("Other Reason"),
+                                            leading: new Radio(
+                                              value: 2,
+                                              groupValue: _checked,
+                                              onChanged: (newValue) =>
+                                                  setState(() =>
+                                                  _checked = newValue),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    );
-                                  }, //builder
+                                        ],
+                                      );
+                                    }, //builder
                                   ),
 
-                                actions: <Widget>[
-                                  new FlatButton(
-                                    onPressed: () {
-                                      apiService.markAsUndelivered(rid, data.orderId.toString(), _checked);
-                                      Navigator.of(context).pop();
-                                    },
-                                    textColor: Theme
-                                        .of(context)
-                                        .primaryColor,
-                                    child: const Text('Submit'),
-                                  ),
-                                ],
-                              );
-                            },
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      onPressed: () {
+                                        apiService.markAsUndelivered(
+                                            rid, data.orderId.toString(),
+                                            _checked);
+                                        Navigator.of(context).pop();
+                                      },
+                                      textColor: Theme
+                                          .of(context)
+                                          .primaryColor,
+                                      child: const Text('Submit'),
+                                    ),
+                                  ],
+                                );
+                              },
 //                            barrierDismissible: false,
-                          );
+                            );
                         },
                           padding: const EdgeInsets.all(10),
                           textColor: Colors.white,
@@ -260,6 +263,9 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                 );
                             }
                             apiService.orderDelivered(data.orderId.toString());
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (_) => HomePage()));
                           },
                           width: 250,
                           label: Text(
