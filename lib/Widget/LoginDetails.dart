@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instantdel/pages/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:instantdel/api_service.dart';
+import 'package:instantdel/models/rider.dart';
 
 class LoginDetails extends StatefulWidget {
   @override
@@ -42,6 +43,36 @@ class _LoginDetailsState extends State<LoginDetails> {
     });
   }
 
+  Widget _riderInfo(){
+    return new FutureBuilder(
+        future: apiService.riderPayoutInfo(rid),
+        builder: (
+            BuildContext context,
+            AsyncSnapshot<List<RiderInfo>> model,
+            ){
+          if(model.hasData){
+            return _buildRiderInfo(model.data);
+          }
+          return Center(child: CircularProgressIndicator(),
+          );
+        }
+    );
+  }
+
+  Widget _buildRiderInfo(List<RiderInfo> riders){
+    return Container(
+        child: Column(
+        children: <Widget>[
+            Container(
+              child: Text("COD Remit "+riders[0].codReemmit.toString()),
+            ),
+          Container(
+            child: Text("Pay out "+riders[0].payout.toString()),
+          ),
+          ]
+        )
+    );
+  }
   @override
   Widget build(BuildContext context) {
     if (rid == ""){
@@ -148,6 +179,7 @@ class _LoginDetailsState extends State<LoginDetails> {
                       )
                   ),
                 ),
+                _riderInfo(),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),

@@ -7,5 +7,6 @@ class Config {
   static String orderDelivered = "delivered";
   static String loginRider = "loginrider";
   static String markUndelivered = "markundelivered";
+  static String riderInfo = "riderinfo";
 
 }

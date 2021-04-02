@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:instantdel/models/orders.dart';
+import 'package:instantdel/models/rider.dart';
 import 'package:instantdel/config.dart';
 
 class APIService{
@@ -24,6 +25,34 @@ class APIService{
         //print(response.data);
         data = (response.data['data'] as List)
             .map((i) => OrderDetails.fromJson(i),).toList();
+        print(data);
+      }
+    }on DioError catch (e) {
+      print(e.response);
+    }
+    return data;
+  }
+
+  Future<List<RiderInfo>> riderPayoutInfo(String riderid) async{
+    List<RiderInfo> data = new List<RiderInfo> ();
+    try{
+      String url = Config.url + Config.riderInfo;
+      var response = await Dio().post(
+        url,
+        data: {
+          "rider_id" : riderid
+        },
+          options: new Options(
+              headers: {
+                HttpHeaders
+                    .contentTypeHeader: "application/json",
+              }
+          )
+      );
+      if (response.statusCode == 200) {
+        //print(response.data);
+        data = (response.data['data'] as List)
+            .map((i) => RiderInfo.fromJson(i),).toList();
         print(data);
       }
     }on DioError catch (e) {
