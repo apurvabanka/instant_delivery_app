@@ -7,7 +7,6 @@ import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:instantdel/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:io';
 
 class HomePage extends StatefulWidget {
   @override

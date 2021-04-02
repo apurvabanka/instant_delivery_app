@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instantdel/api_service.dart';
 import 'package:instantdel/models/orders.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 
 class ListCompletedOrders extends StatefulWidget {
@@ -70,7 +71,7 @@ class _ListCompletedOrdersState extends State<ListCompletedOrders> {
 
   Widget _buildOrderList(List<OrderDetails> orders){
     return Container(
-      height: 650,
+      height: 70.0.h,
       alignment: Alignment.centerLeft,
         child: new RefreshIndicator(
         onRefresh: _refreshLocalGallery,

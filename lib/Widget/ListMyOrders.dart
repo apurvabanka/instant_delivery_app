@@ -1,4 +1,3 @@
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:instantdel/api_service.dart';
 import 'package:instantdel/models/orders.dart';
@@ -7,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:instantdel/pages/homepage.dart';
+import 'package:sizer/sizer.dart';
 
 class ListMyOrders extends StatefulWidget {
   @override
@@ -67,14 +67,6 @@ class _ListMyOrdersState extends State<ListMyOrders> {
           if(model.hasData){
             return _buildOrderList(model.data);
           }
-            Fluttertoast.showToast(
-              msg: "Hello world",
-              textColor: Colors.black,
-              toastLength: Toast.LENGTH_SHORT,
-              timeInSecForIos: 1,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.indigo,
-            );
           return Center(child: CircularProgressIndicator(),
           );
         }
@@ -90,7 +82,8 @@ class _ListMyOrdersState extends State<ListMyOrders> {
 
 Widget _buildOrderList(List<OrderDetails> orders){
   return Container(
-    height: 650,
+    height: 70.0.h,
+    width: 100.0.w,
     alignment: Alignment.centerLeft,
     child: new RefreshIndicator(
       onRefresh: _refreshLocalGallery,
@@ -111,18 +104,25 @@ Widget _buildOrderList(List<OrderDetails> orders){
                   width: 5.0,
                 ),
               ),
-              margin: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+              margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 0.0),
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
-                        "Order ID - "+data.orderId.toString()+" Order Type - "+data.typeOfOrder.toString(),
+                       data.orderId.toString()+" Order Type - "+data.typeOfOrder.toString(),
                         style: TextStyle(
-                          fontSize: 20.0,
+                          fontSize: 15.0.sp,
                           color: Colors.grey[600],
                         ),
+                    ),
+                    Text(
+                      "Payment Type - "+data.typeOfPayment.toString(),
+                      style: TextStyle(
+                        fontSize: 15.0.sp,
+                        color: Colors.grey[600],
+                      ),
                     ),
                     SizedBox(height: 10.0,),
                     Padding(
@@ -134,17 +134,19 @@ Widget _buildOrderList(List<OrderDetails> orders){
                         MapUtils.openMap(data.dropLat,data.dropLong);
                       },
                           padding: const EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           textColor: Colors.white,
                           color: Colors.blue,
-                        child: Text('Navigate'),
+                        child: Icon(Icons.map),
                       ),
                       RaisedButton(onPressed: (){
                         _makingPhoneCall(data.customerNumber);
                       },
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                         padding: const EdgeInsets.all(10),
                         textColor: Colors.white,
                         color: Colors.green,
-                        child: Text('Call User'),
+                        child: Icon(Icons.call),
                       ),
                         RaisedButton(onPressed: (){
                             setState(() {
@@ -232,9 +234,10 @@ Widget _buildOrderList(List<OrderDetails> orders){
                             );
                         },
                           padding: const EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           textColor: Colors.white,
                           color: Colors.red,
-                          child: Text('Undelivered'),
+                          child: Icon(Icons.backpack),
                         ),
                   ]
                       ),
@@ -255,30 +258,51 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                     context: context,
                                     builder: (BuildContext context)  {
                                       return AlertDialog(
-                                        title: const Text('Collect Cash'),
-                                        content: Text(
-                                            'Rs '+data.orderValue.toString()),
+                                        title: const Text('Mark Order'),
+                                        content: new Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text("Collect cash Rs."+data.orderValue.toString()),
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            onPressed: () {
+                                              apiService.orderDelivered(data.orderId.toString());
+                                              Navigator.push(
+                                                  context, MaterialPageRoute(
+                                                  builder: (_) => HomePage()));
+                                            },
+                                            textColor: Theme
+                                                .of(context)
+                                                .primaryColor,
+                                            child: const Text('Cash Collected'),
+                                          ),
+                                        ],
                                       );
                                     },
                                 );
                             }
-                            apiService.orderDelivered(data.orderId.toString());
-                            Navigator.push(
-                                context, MaterialPageRoute(
-                                builder: (_) => HomePage()));
+                            else{
+                              apiService.orderDelivered(data.orderId.toString());
+                              Navigator.push(
+                                  context, MaterialPageRoute(
+                                  builder: (_) => HomePage()));
+                            }
                           },
-                          width: 250,
+                          width: 75.0.w,
                           label: Text(
                           "Slide To Complete",
                           style: TextStyle(
-                          color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 17),
+                          color: Color(0xff4a4a4a), fontWeight: FontWeight.w500, fontSize: 15.0.sp),
                           ),
                           icon: Text(
                           "X",
                           style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w300,
-                          fontSize: 30,
+                          fontSize: 20.0.sp,
                           ),
                           ),
                           )
