@@ -62,12 +62,60 @@ class _LoginDetailsState extends State<LoginDetails> {
   Widget _buildRiderInfo(List<RiderInfo> riders){
     return Container(
         child: Column(
-        children: <Widget>[
-            Container(
-              child: Text("COD Remit "+riders[0].codReemmit.toString()),
+        children: [
+          Card(
+            margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text("COD Remit",
+                          style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.w600
+                          ),),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Text(riders[0].codReemmit.toString(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.w300
+                          ),)
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child:
+                    Column(
+                      children: [
+                        Text("Payout",
+                          style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.w600
+                          ),),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Text(riders[0].payout.toString(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.w300
+                          ),)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          Container(
-            child: Text("Pay out "+riders[0].payout.toString()),
           ),
           ]
         )
@@ -179,7 +227,6 @@ class _LoginDetailsState extends State<LoginDetails> {
                       )
                   ),
                 ),
-                _riderInfo(),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -192,6 +239,7 @@ class _LoginDetailsState extends State<LoginDetails> {
                     ),
                   ),
                 ),
+                _riderInfo(),
                 Container(
                     height: 60,
                     width: 200,
