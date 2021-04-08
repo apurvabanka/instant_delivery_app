@@ -220,7 +220,9 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                         apiService.markAsUndelivered(
                                             rid, data.orderId.toString(),
                                             _checked);
-                                        Navigator.of(context).pop();
+                                        Navigator.push(
+                                            context, MaterialPageRoute(
+                                            builder: (_) => HomePage()));
                                       },
                                       textColor: Theme
                                           .of(context)
