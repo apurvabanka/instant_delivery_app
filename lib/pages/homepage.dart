@@ -123,7 +123,9 @@ class _HomePageState extends State<HomePage> {
                         new FlatButton(
                           onPressed: () {
                             apiService.orderPickUp(cameraScanResult,rid);
-                            Navigator.of(context).pop();
+                            Navigator.push(
+                                context, MaterialPageRoute(
+                                builder: (_) => HomePage()));
                           },
                           textColor: Theme
                               .of(context)
