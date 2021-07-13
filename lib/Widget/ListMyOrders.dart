@@ -110,18 +110,29 @@ Widget _buildOrderList(List<OrderDetails> orders){
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text(
-                       data.orderId.toString()+" Order Type - "+data.typeOfOrder.toString(),
+                    ListTile(
+                      leading: Text(
+                        data.typeOfOrder,
                         style: TextStyle(
-                          fontSize: 15.0.sp,
-                          color: Colors.grey[600],
+                          fontSize: 18.0.sp
                         ),
+                      ),
+                      title: Text(
+                        data.customerName,
+                      ),
+                      subtitle: Text(
+                           data.customerAddress1.toString()+" "+data.customerAddress2.toString(),
+                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                      ),
                     ),
-                    Text(
-                      "Payment Type - "+data.typeOfPayment.toString(),
-                      style: TextStyle(
-                        fontSize: 15.0.sp,
-                        color: Colors.grey[600],
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Pay - "+data.typeOfPayment.toString(),
+                        style: TextStyle(
+                            color: Colors.black.withOpacity(0.6),
+                            fontSize: 13.0.sp,
+                        ),
                       ),
                     ),
                     SizedBox(height: 10.0,),
@@ -131,7 +142,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children:[
                       RaisedButton(onPressed: (){
-                        MapUtils.openMap(data.dropLat,data.dropLong);
+                        MapUtils.openMap(data.customerAddress1,data.customerAddress2);
                       },
                           padding: const EdgeInsets.all(10),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),

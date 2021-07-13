@@ -10,6 +10,9 @@ class OrderDetails {
   String customerNumber;
   String typeOfOrder;
   String typeOfPayment;
+  String customerAddress1;
+  String customerAddress2;
+  String customerName;
 
   OrderDetails({
     this.orderId,
@@ -22,7 +25,10 @@ class OrderDetails {
     this.orderValue,
     this.customerNumber,
     this.typeOfOrder,
-    this.typeOfPayment
+    this.typeOfPayment,
+    this.customerAddress1,
+    this.customerAddress2,
+    this.customerName
   });
 
   OrderDetails.fromJson(Map<String,dynamic> json){
@@ -37,5 +43,8 @@ class OrderDetails {
     customerNumber = json['customer_number'];
     typeOfOrder = json['type_of_order'];
     typeOfPayment = json['type_of_payment'];
+    customerAddress1 = json['customer_address_1'];
+    customerAddress2 = json['customer_address_2'];
+    customerName = json['customer_name'];
   }
 }
