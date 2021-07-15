@@ -100,11 +100,11 @@ Widget _buildOrderList(List<OrderDetails> orders){
               elevation: 20,
               shape: RoundedRectangleBorder(
                 side: BorderSide(
-                  color: data.typeOfOrder == "PRE" ? Colors.green : Colors.red ,
+                  color: data.typeOfOrder == "NRML" ? Colors.green : Colors.red ,
                   width: 5.0,
                 ),
               ),
-              margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 0.0),
+              margin: EdgeInsets.fromLTRB(1.0, 2.0, 2.0, 0.0),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -128,16 +128,15 @@ Widget _buildOrderList(List<OrderDetails> orders){
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        "Pay - "+data.typeOfPayment.toString(),
+                        data.typeOfPayment == 'COD' ? 'Please collect Rs.'+data.orderValue.toString() : 'Prepaid Order',
                         style: TextStyle(
                             color: Colors.black.withOpacity(0.6),
                             fontSize: 13.0.sp,
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.0,),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Row (
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children:[
@@ -171,7 +170,7 @@ Widget _buildOrderList(List<OrderDetails> orders){
                                   content: StatefulBuilder(
                                     builder: (BuildContext context,
                                         StateSetter setState) {
-                                      String text1 = data.typeOfOrder == "PRE"
+                                      String text1 = data.typeOfOrder == "NRML"
                                           ? "Refused Order"
                                           : "Refused Pickup";
                                       return Column(
